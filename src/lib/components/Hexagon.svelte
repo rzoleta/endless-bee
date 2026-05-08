@@ -21,7 +21,7 @@
 
 <button
   type="button"
-  class="relative block w-full cursor-pointer border-0 bg-transparent p-0 [aspect-ratio:120/103.92] [transition:transform_80ms_ease-out] active:scale-[0.94] {pressed
+  class="relative block w-full cursor-pointer touch-manipulation border-0 bg-transparent p-0 [aspect-ratio:120/103.92] [transition:transform_80ms_ease-out] active:scale-[0.94] {pressed
     ? 'scale-[0.92]'
     : 'hover:scale-[1.02]'}"
   aria-label={`Letter ${letter.toUpperCase()}${center ? ' (required)' : ''}`}
