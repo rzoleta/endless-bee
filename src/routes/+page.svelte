@@ -64,7 +64,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-5 pb-16 pt-6 text-[color:var(--game-fg)]">
-  <header class="mb-6 flex items-center justify-between border-b border-[color:var(--game-border-light)] pb-4">
+  <header class="mb-3 flex items-center justify-between border-b border-[color:var(--game-border-light)] pb-4 lg:mb-6">
     <div class="flex items-center gap-2">
       <span class="text-2xl">🐝</span>
       <h1 class="m-0 text-2xl font-bold tracking-tight">Endless Bee</h1>
