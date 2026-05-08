@@ -95,6 +95,16 @@ export function generatePuzzle(): Puzzle {
 	throw new Error('Failed to generate a valid puzzle after max attempts');
 }
 
+/** Rebuild a full Puzzle from stored letters without randomness. */
+export function reconstructPuzzle(letters: string[], requiredLetter: string): Puzzle {
+	const letterSet = new Set(letters);
+	const validWords = findValidWords(letterSet, requiredLetter);
+	const pangrams = validWords.filter((w) => isPangram(w, letters));
+	const maxScore = validWords.reduce((sum, w) => sum + computeWordScore(w, letters), 0);
+	const outerLetters = letters.filter((l) => l !== requiredLetter);
+	return { letters, requiredLetter, outerLetters, validWords, pangrams, maxScore };
+}
+
 /** Reshuffles only the outer letters. */
 export function shuffleOuter(puzzle: Puzzle): Puzzle {
 	return { ...puzzle, outerLetters: shuffle(puzzle.outerLetters) };

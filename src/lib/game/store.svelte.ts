@@ -1,13 +1,25 @@
 import { browser } from '$app/environment';
-import { generatePuzzle, isPangram, shuffleOuter, type Puzzle } from './puzzle';
+import { generatePuzzle, isPangram, reconstructPuzzle, shuffleOuter, type Puzzle } from './puzzle';
 import { computeTotalScore, computeWordScore, getRank } from './scoring';
 import { getValidWordSet } from './dictionary';
 
-const STORAGE_KEY = 'endless-bee-state-v1';
+const STORAGE_KEY = 'endless-bee-state-v2';
 
-interface PersistedState {
-	puzzle: Puzzle;
+export interface GameRecord {
+	id: string;
+	createdAt: number;
+	lastPlayedAt: number;
+	letters: string[];
+	requiredLetter: string;
 	foundWords: string[];
+	completedAt: number | null;
+	totalWords: number;
+	maxScore: number;
+}
+
+interface AppState {
+	activeGameId: string | null;
+	games: GameRecord[];
 }
 
 export type FeedbackKind = 'success' | 'pangram' | 'error' | 'info';
@@ -24,6 +36,9 @@ class GameStore {
 	foundWords = $state<string[]>([]);
 	currentInput = $state<string>('');
 	feedback = $state<Feedback | null>(null);
+	games = $state<GameRecord[]>([]);
+	activeGameId = $state<string | null>(null);
+
 	private feedbackTimer: ReturnType<typeof setTimeout> | null = null;
 	private feedbackId = 0;
 
@@ -34,26 +49,39 @@ class GameStore {
 			? {
 					found: this.foundWords.length,
 					total: this.puzzle.validWords.length,
-					pangramsFound: this.foundWords.filter((w) => this.puzzle && isPangram(w, this.puzzle.letters)).length,
+					pangramsFound: this.foundWords.filter(
+						(w) => this.puzzle && isPangram(w, this.puzzle.letters)
+					).length,
 					pangramsTotal: this.puzzle.pangrams.length
-			  }
+				}
 			: { found: 0, total: 0, pangramsFound: 0, pangramsTotal: 0 }
 	);
 
 	init() {
 		if (!browser) return;
-		const restored = this.loadFromStorage();
-		if (restored) {
-			this.puzzle = restored.puzzle;
-			this.foundWords = restored.foundWords;
+		const state = this.loadFromStorage();
+		if (state && state.games.length > 0) {
+			this.games = state.games;
+			const record = state.games.find((g) => g.id === state.activeGameId) ?? state.games[0];
+			this.activeGameId = record.id;
+			this.puzzle = reconstructPuzzle(record.letters, record.requiredLetter);
+			this.foundWords = record.foundWords;
 		} else {
-			this.newGame();
+			this.startNewGameRecord();
 		}
 	}
 
 	newGame() {
-		this.puzzle = generatePuzzle();
-		this.foundWords = [];
+		this.currentInput = '';
+		this.startNewGameRecord();
+	}
+
+	loadGame(id: string) {
+		const record = this.games.find((g) => g.id === id);
+		if (!record || record.id === this.activeGameId) return;
+		this.activeGameId = id;
+		this.puzzle = reconstructPuzzle(record.letters, record.requiredLetter);
+		this.foundWords = record.foundWords;
 		this.currentInput = '';
 		this.persist();
 	}
@@ -104,12 +132,10 @@ class GameStore {
 			this.clearInput();
 			return;
 		}
-		// Validate against the dictionary set (catches edge cases too)
 		if (!getValidWordSet().has(word)) {
 			this.showFeedback('Not in word list', 'error');
 			return;
 		}
-		// Final check against the precomputed valid words for this puzzle
 		if (!this.puzzle.validWords.includes(word)) {
 			this.showFeedback('Not in word list', 'error');
 			return;
@@ -119,7 +145,7 @@ class GameStore {
 		const pangram = isPangram(word, this.puzzle.letters);
 		this.foundWords = [...this.foundWords, word];
 		this.clearInput();
-		this.persist();
+		this.updateActiveRecord();
 
 		if (pangram) {
 			this.showFeedback('Pangram!', 'pangram', score);
@@ -134,6 +160,42 @@ class GameStore {
 		}
 	}
 
+	private startNewGameRecord() {
+		const puzzle = generatePuzzle();
+		const record: GameRecord = {
+			id: crypto.randomUUID(),
+			createdAt: Date.now(),
+			lastPlayedAt: Date.now(),
+			letters: puzzle.letters,
+			requiredLetter: puzzle.requiredLetter,
+			foundWords: [],
+			completedAt: null,
+			totalWords: puzzle.validWords.length,
+			maxScore: puzzle.maxScore
+		};
+		this.games = [record, ...this.games];
+		this.activeGameId = record.id;
+		this.puzzle = puzzle;
+		this.foundWords = [];
+		this.persist();
+	}
+
+	private updateActiveRecord() {
+		if (!this.puzzle || !this.activeGameId) return;
+		const now = Date.now();
+		const isComplete = this.foundWords.length === this.puzzle.validWords.length;
+		this.games = this.games.map((g) => {
+			if (g.id !== this.activeGameId) return g;
+			return {
+				...g,
+				foundWords: this.foundWords,
+				lastPlayedAt: now,
+				completedAt: isComplete ? (g.completedAt ?? now) : g.completedAt
+			};
+		});
+		this.persist();
+	}
+
 	private showFeedback(message: string, kind: FeedbackKind, score?: number) {
 		this.feedbackId += 1;
 		const id = this.feedbackId;
@@ -145,11 +207,11 @@ class GameStore {
 	}
 
 	private persist() {
-		if (!browser || !this.puzzle) return;
+		if (!browser) return;
 		try {
-			const state: PersistedState = {
-				puzzle: this.puzzle,
-				foundWords: this.foundWords
+			const state: AppState = {
+				activeGameId: this.activeGameId,
+				games: this.games
 			};
 			localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 		} catch {
@@ -157,15 +219,13 @@ class GameStore {
 		}
 	}
 
-	private loadFromStorage(): PersistedState | null {
+	private loadFromStorage(): AppState | null {
 		if (!browser) return null;
 		try {
 			const raw = localStorage.getItem(STORAGE_KEY);
 			if (!raw) return null;
-			const parsed = JSON.parse(raw) as PersistedState;
-			if (!parsed.puzzle || !Array.isArray(parsed.foundWords)) return null;
-			// Basic shape check
-			if (!Array.isArray(parsed.puzzle.letters) || parsed.puzzle.letters.length !== 7) return null;
+			const parsed = JSON.parse(raw) as AppState;
+			if (!Array.isArray(parsed.games)) return null;
 			return parsed;
 		} catch {
 			return null;

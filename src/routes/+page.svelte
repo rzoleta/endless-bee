@@ -5,6 +5,7 @@
   import Controls from '$lib/components/Controls.svelte';
   import FoundWords from '$lib/components/FoundWords.svelte';
   import ScoreBar from '$lib/components/ScoreBar.svelte';
+  import GameHistory from '$lib/components/GameHistory.svelte';
   import { game } from '$lib/game/store.svelte';
   import ThemeToggle from '$lib/components/ThemeToggle.svelte';
   import { Button } from '$lib/components/ui/button';
@@ -56,93 +57,93 @@
     game.addLetter(letter);
     flashLetter(letter);
   }
-
-  function handleNewGame() {
-    if (
-      game.foundWords.length > 0 &&
-      !confirm('Start a new game? Your current progress will be lost.')
-    ) {
-      return;
-    }
-    game.newGame();
-  }
 </script>
 
 <svelte:head>
   <title>Endless Bee</title>
 </svelte:head>
 
-<div class="mx-auto max-w-[520px] px-5 pb-16 pt-6 text-[color:var(--game-fg)]">
-  <header class="mb-4 flex items-center justify-between border-b border-[color:var(--game-border-light)] pb-4">
+<div class="mx-auto max-w-5xl px-5 pb-16 pt-6 text-[color:var(--game-fg)]">
+  <header class="mb-6 flex items-center justify-between border-b border-[color:var(--game-border-light)] pb-4">
     <div class="flex items-center gap-2">
       <span class="text-2xl">🐝</span>
       <h1 class="m-0 text-2xl font-bold tracking-tight">Endless Bee</h1>
     </div>
     <div class="flex items-center gap-2">
-      <Button variant="outline" size="pill" onclick={handleNewGame}>New Game</Button>
+      <Button variant="outline" size="pill" onclick={() => game.newGame()}>New Game</Button>
       <ThemeToggle />
     </div>
   </header>
 
-  {#if game.puzzle}
-    <section class="mb-4">
-      <ScoreBar
-        score={game.score}
-        maxScore={game.puzzle.maxScore}
-        currentRankIndex={game.rank?.currentIndex ?? 0}
-        currentRankName={game.rank?.current.name ?? 'Beginner'}
-      />
-    </section>
+  <div class="flex flex-col gap-8 lg:grid lg:grid-cols-[480px_1fr]">
+    <!-- Game column -->
+    <div>
+      {#if game.puzzle}
+        <section class="mb-4">
+          <ScoreBar
+            score={game.score}
+            maxScore={game.puzzle.maxScore}
+            currentRankIndex={game.rank?.currentIndex ?? 0}
+            currentRankName={game.rank?.current.name ?? 'Beginner'}
+          />
+        </section>
 
-    <section class="mb-6">
-      <FoundWords
-        words={game.foundWords}
-        total={game.puzzle.validWords.length}
-        puzzleLetters={game.puzzle.letters}
-      />
-      <div class="mt-2 text-right text-[0.85rem] text-[color:var(--game-muted)]">
-        <span>
-          Pangrams: <strong>{game.progress.pangramsFound}</strong> / {game.progress.pangramsTotal}
-        </span>
-      </div>
-    </section>
+        <section class="mb-6">
+          <FoundWords
+            words={game.foundWords}
+            total={game.puzzle.validWords.length}
+            puzzleLetters={game.puzzle.letters}
+          />
+          <div class="mt-2 text-right text-[0.85rem] text-[color:var(--game-muted)]">
+            <span>
+              Pangrams: <strong>{game.progress.pangramsFound}</strong> / {game.progress.pangramsTotal}
+            </span>
+          </div>
+        </section>
 
-    <section class="flex flex-col items-center gap-4">
-      <div class="flex h-9 w-full items-center justify-center">
-        {#if game.feedback}
-          {#key game.feedback.id}
-            <div class="animate-[feedback-pop_280ms_ease-out] rounded-[6px] px-4 py-[0.4rem] text-[0.95rem] font-bold {feedbackColorClasses[game.feedback.kind] ?? ''}">
-              {game.feedback.message}
-              {#if game.feedback.score}
-                <span class="ml-[0.4rem] font-extrabold text-[color:var(--game-fg)]">+{game.feedback.score}</span>
-              {/if}
-            </div>
-          {/key}
-        {/if}
-      </div>
+        <section class="flex flex-col items-center gap-4">
+          <div class="flex h-9 w-full items-center justify-center">
+            {#if game.feedback}
+              {#key game.feedback.id}
+                <div class="animate-[feedback-pop_280ms_ease-out] rounded-[6px] px-4 py-[0.4rem] text-[0.95rem] font-bold {feedbackColorClasses[game.feedback.kind] ?? ''}">
+                  {game.feedback.message}
+                  {#if game.feedback.score}
+                    <span class="ml-[0.4rem] font-extrabold text-[color:var(--game-fg)]">+{game.feedback.score}</span>
+                  {/if}
+                </div>
+              {/key}
+            {/if}
+          </div>
 
-      <GuessInput
-        input={game.currentInput}
-        requiredLetter={game.puzzle.requiredLetter}
-        validLetters={game.puzzle.letters}
-      />
+          <GuessInput
+            input={game.currentInput}
+            requiredLetter={game.puzzle.requiredLetter}
+            validLetters={game.puzzle.letters}
+          />
 
-      <div class="flex w-full justify-center py-2">
-        <Honeycomb
-          requiredLetter={game.puzzle.requiredLetter}
-          outerLetters={game.puzzle.outerLetters}
-          {pressedLetter}
-          onLetterClick={handleHexClick}
-        />
-      </div>
+          <div class="flex w-full justify-center py-2">
+            <Honeycomb
+              requiredLetter={game.puzzle.requiredLetter}
+              outerLetters={game.puzzle.outerLetters}
+              {pressedLetter}
+              onLetterClick={handleHexClick}
+            />
+          </div>
 
-      <Controls
-        onDelete={() => game.deleteLetter()}
-        onShuffle={() => game.shuffle()}
-        onEnter={() => game.submit()}
-      />
-    </section>
-  {:else}
-    <div class="py-16 text-center text-[color:var(--game-muted)]">Loading puzzle…</div>
-  {/if}
+          <Controls
+            onDelete={() => game.deleteLetter()}
+            onShuffle={() => game.shuffle()}
+            onEnter={() => game.submit()}
+          />
+        </section>
+      {:else}
+        <div class="py-16 text-center text-[color:var(--game-muted)]">Loading puzzle…</div>
+      {/if}
+    </div>
+
+    <!-- History sidebar -->
+    <div class="lg:border-l lg:border-[color:var(--game-border-light)] lg:pl-8">
+      <GameHistory />
+    </div>
+  </div>
 </div>
