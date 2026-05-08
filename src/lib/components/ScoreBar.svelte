@@ -50,6 +50,6 @@
     ></div>
   </div>
   <div class="min-w-[4rem] text-right text-[0.85rem] text-[color:var(--game-muted)]">
-    {score} pts
+    {GENIUS_THRESHOLD} pts
   </div>
 </div>
