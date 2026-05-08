@@ -1,5 +1,7 @@
 <script lang="ts">
   import './layout.css';
+  import { dev } from '$app/environment';
+  import { injectAnalytics } from '@vercel/analytics/sveltekit';
   import favicon from '$lib/assets/favicon.ico';
   import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
   import { ModeWatcher } from 'mode-watcher';

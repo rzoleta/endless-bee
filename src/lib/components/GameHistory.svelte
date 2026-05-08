@@ -15,7 +15,10 @@
   }
 
   function lettersDisplay(record: GameRecord): { letter: string; isCenter: boolean }[] {
-    return record.letters.map((l) => ({ letter: l.toUpperCase(), isCenter: l === record.requiredLetter }));
+    return record.letters.map((l) => ({
+      letter: l.toUpperCase(),
+      isCenter: l === record.requiredLetter,
+    }));
   }
 </script>
 
@@ -33,13 +36,15 @@
         onclick={() => game.loadGame(record.id)}
         class="w-full rounded-lg border px-3 py-2.5 text-left transition-colors
           {isActive
-            ? 'border-[#f7da21] bg-[#f7da21]/10'
-            : 'border-[color:var(--game-border-light)] hover:border-[#f7da21]/50 hover:bg-[#f7da21]/5'}"
+          ? 'border-[#f7da21] bg-[#f7da21]/10'
+          : 'border-[color:var(--game-border-light)] hover:border-[#f7da21]/50 hover:bg-[#f7da21]/5'}"
       >
         <div class="mb-1 flex items-center justify-between gap-2">
           <span class="text-xs text-[color:var(--game-muted)]">{formatDate(record.createdAt)}</span>
           <div class="flex items-center gap-1">
-            <span class="text-xs font-medium text-[color:var(--game-muted)]">{recordRank(record)}</span>
+            <span class="text-xs font-medium text-[color:var(--game-muted)]"
+              >{recordRank(record)}</span
+            >
             {#if record.completedAt}
               <span title="Queen Bee!">👑</span>
             {/if}
@@ -50,8 +55,8 @@
           {#each lettersDisplay(record) as { letter, isCenter }}
             <span
               class="text-xs font-bold
-                {isCenter ? 'text-[#f7da21]' : 'text-[color:var(--game-fg)]'}"
-            >{letter}</span>
+                {isCenter ? 'text-[#f7da21]' : 'text-[color:var(--game-fg)]'}">{letter}</span
+            >
           {/each}
         </div>
 

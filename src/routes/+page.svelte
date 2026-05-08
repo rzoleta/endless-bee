@@ -14,7 +14,8 @@
   let pressedTimer: ReturnType<typeof setTimeout> | null = null;
 
   const feedbackColorClasses: Record<string, string> = {
-    success: 'bg-[color:var(--game-feedback-success-bg)] text-[color:var(--game-feedback-success-fg)]',
+    success:
+      'bg-[color:var(--game-feedback-success-bg)] text-[color:var(--game-feedback-success-fg)]',
     pangram: 'bg-[#f7da21] text-[#5e4a00]',
     error: 'bg-[color:var(--game-feedback-error-bg)] text-[color:var(--game-feedback-error-fg)]',
     info: 'bg-[color:var(--game-feedback-error-bg)] text-[color:var(--game-feedback-error-fg)]',
@@ -64,7 +65,9 @@
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-5 pb-16 pt-6 text-[color:var(--game-fg)]">
-  <header class="mb-3 flex items-center justify-between border-b border-[color:var(--game-border-light)] pb-4 lg:mb-6">
+  <header
+    class="mb-3 flex items-center justify-between border-b border-[color:var(--game-border-light)] pb-4 lg:mb-6"
+  >
     <div class="flex items-center gap-2">
       <span class="text-2xl">🐝</span>
       <h1 class="m-0 text-2xl font-bold tracking-tight">Endless Bee</h1>
@@ -83,10 +86,16 @@
           <div class="flex h-9 w-full items-center justify-center">
             {#if game.feedback}
               {#key game.feedback.id}
-                <div class="animate-[feedback-pop_280ms_ease-out] rounded-[6px] px-4 py-[0.4rem] text-[0.95rem] font-bold {feedbackColorClasses[game.feedback.kind] ?? ''}">
+                <div
+                  class="animate-[feedback-pop_280ms_ease-out] rounded-[6px] px-4 py-[0.4rem] text-[0.95rem] font-bold {feedbackColorClasses[
+                    game.feedback.kind
+                  ] ?? ''}"
+                >
                   {game.feedback.message}
                   {#if game.feedback.score}
-                    <span class="ml-[0.4rem] font-extrabold text-[color:var(--game-fg)]">+{game.feedback.score}</span>
+                    <span class="ml-[0.4rem] font-extrabold text-[color:var(--game-fg)]"
+                      >+{game.feedback.score}</span
+                    >
                   {/if}
                 </div>
               {/key}
@@ -132,7 +141,8 @@
           />
           <div class="mt-2 text-right text-[0.85rem] text-[color:var(--game-muted)]">
             <span>
-              Pangrams: <strong>{game.progress.pangramsFound}</strong> / {game.progress.pangramsTotal}
+              Pangrams: <strong>{game.progress.pangramsFound}</strong> / {game.progress
+                .pangramsTotal}
             </span>
           </div>
         </section>
