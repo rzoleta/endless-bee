@@ -45,10 +45,10 @@
 	const cellWPct = (W / TOTAL_W) * 100; // ~33.33%
 </script>
 
-<div class="honeycomb" style="--cell-w: {cellWPct}%;">
+<div class="relative mx-auto w-[min(360px,88vw)] [aspect-ratio:360/311.76]">
 	<div
-		class="hex-cell"
-		style="left: {pct(cx, TOTAL_W)}; top: {pct(cy, TOTAL_H)};"
+		class="absolute -translate-x-1/2 -translate-y-1/2 [aspect-ratio:120/103.92]"
+		style="width: {cellWPct}%; left: {pct(cx, TOTAL_W)}; top: {pct(cy, TOTAL_H)};"
 	>
 		<Hexagon
 			letter={requiredLetter}
@@ -59,8 +59,8 @@
 	</div>
 	{#each outerLetters as letter, i (letter)}
 		<div
-			class="hex-cell"
-			style="left: {pct(outerPositions[i].x, TOTAL_W)}; top: {pct(outerPositions[i].y, TOTAL_H)};"
+			class="absolute -translate-x-1/2 -translate-y-1/2 [aspect-ratio:120/103.92]"
+			style="width: {cellWPct}%; left: {pct(outerPositions[i].x, TOTAL_W)}; top: {pct(outerPositions[i].y, TOTAL_H)};"
 		>
 			<Hexagon
 				{letter}
@@ -70,18 +70,3 @@
 		</div>
 	{/each}
 </div>
-
-<style>
-	.honeycomb {
-		position: relative;
-		width: min(360px, 88vw);
-		aspect-ratio: 360 / 311.76;
-		margin: 0 auto;
-	}
-	.hex-cell {
-		position: absolute;
-		width: var(--cell-w);
-		aspect-ratio: 120 / 103.92;
-		transform: translate(-50%, -50%);
-	}
-</style>

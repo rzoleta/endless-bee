@@ -147,11 +147,22 @@
 	--color-sidebar-ring: var(--sidebar-ring);
 }
 
+@keyframes feedback-pop {
+	0% { opacity: 0; transform: translateY(8px) scale(0.95); }
+	60% { transform: translateY(-2px) scale(1.02); }
+	100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes blink {
+	50% { opacity: 0; }
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
 	}
 	body {
 		@apply bg-background text-foreground;
+		font-family: 'nyt-franklin', 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, 'Segoe UI', sans-serif;
 	}
 }

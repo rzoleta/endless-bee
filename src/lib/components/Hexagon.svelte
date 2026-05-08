@@ -7,83 +7,29 @@
 	}
 
 	let { letter, center = false, pressed = false, onclick }: Props = $props();
+
+	const hexFill = $derived(
+		center && pressed ? '#e7c800'
+		: center ? '#f7da21'
+		: pressed ? 'var(--game-hex-pressed)'
+		: 'var(--game-hex)'
+	);
 </script>
 
 <button
 	type="button"
-	class="hex-btn"
-	class:center
-	class:pressed
+	class="relative block w-full cursor-pointer border-0 bg-transparent p-0 [aspect-ratio:120/103.92] [transition:transform_80ms_ease-out] active:scale-[0.94] {pressed ? 'scale-[0.92]' : 'hover:scale-[1.02]'}"
 	aria-label={`Letter ${letter.toUpperCase()}${center ? ' (required)' : ''}`}
+	style="-webkit-tap-highlight-color: transparent;"
 	onclick={() => onclick?.()}
 >
-	<svg viewBox="0 0 120 103.92" class="hex-svg" aria-hidden="true">
-		<!-- Flat-top hex: flat edges at top and bottom, points on left/right -->
+	<svg viewBox="0 0 120 103.92" class="block h-full w-full scale-[0.92]" aria-hidden="true">
 		<polygon
 			points="30,0 90,0 120,51.96 90,103.92 30,103.92 0,51.96"
-			class="hex-shape"
+			style="fill: {hexFill}; transition: fill 120ms ease;"
 		/>
 	</svg>
-	<span class="hex-letter">{letter.toUpperCase()}</span>
+	<span class="pointer-events-none absolute inset-0 flex select-none items-center justify-center text-[clamp(1.4rem,4vw,2rem)] font-bold tracking-[0.02em] text-[color:var(--game-fg)]">
+		{letter.toUpperCase()}
+	</span>
 </button>
-
-<style>
-	.hex-btn {
-		position: relative;
-		width: 100%;
-		aspect-ratio: 120 / 103.92;
-		background: transparent;
-		border: 0;
-		padding: 0;
-		cursor: pointer;
-		display: block;
-		transition: transform 80ms ease-out;
-		-webkit-tap-highlight-color: transparent;
-	}
-	.hex-btn:hover {
-		transform: scale(1.02);
-	}
-	.hex-btn.pressed {
-		transform: scale(0.92);
-	}
-	.hex-btn:active {
-		transform: scale(0.94);
-	}
-	.hex-svg {
-		width: 100%;
-		height: 100%;
-		display: block;
-		/* Slight inset so adjacent hexes have a visible gap (NYT-style). */
-		transform: scale(0.92);
-		transform-origin: center;
-	}
-	.hex-shape {
-		fill: var(--game-hex);
-		transition: fill 120ms ease;
-	}
-	.hex-btn.center .hex-shape {
-		fill: #f7da21;
-	}
-	.hex-btn.pressed .hex-shape {
-		fill: var(--game-hex-pressed);
-	}
-	.hex-btn.center.pressed .hex-shape {
-		fill: #e7c800;
-	}
-	.hex-letter {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-weight: 700;
-		font-size: clamp(1.4rem, 4vw, 2rem);
-		color: var(--game-fg);
-		pointer-events: none;
-		user-select: none;
-		font-family:
-			'nyt-franklin', 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system,
-			'Segoe UI', sans-serif;
-		letter-spacing: 0.02em;
-	}
-</style>

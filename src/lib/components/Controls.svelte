@@ -11,20 +11,10 @@
 	let { onDelete, onShuffle, onEnter }: Props = $props();
 </script>
 
-<div class="controls">
+<div class="mt-6 flex flex-wrap justify-center gap-4">
 	<Button variant="outline" size="pill-lg" onclick={() => onDelete?.()}>Delete</Button>
 	<Button variant="outline" size="icon-xl" aria-label="Shuffle letters" onclick={() => onShuffle?.()}>
 		<RotateCcw size={18} />
 	</Button>
 	<Button variant="outline" size="pill-lg" onclick={() => onEnter?.()}>Enter</Button>
 </div>
-
-<style>
-	.controls {
-		display: flex;
-		gap: 1rem;
-		justify-content: center;
-		margin-top: 1.5rem;
-		flex-wrap: wrap;
-	}
-</style>

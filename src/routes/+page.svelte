@@ -12,6 +12,13 @@
   let pressedLetter = $state<string | null>(null);
   let pressedTimer: ReturnType<typeof setTimeout> | null = null;
 
+  const feedbackColorClasses: Record<string, string> = {
+    success: 'bg-[color:var(--game-feedback-success-bg)] text-[color:var(--game-feedback-success-fg)]',
+    pangram: 'bg-[#f7da21] text-[#5e4a00]',
+    error: 'bg-[color:var(--game-feedback-error-bg)] text-[color:var(--game-feedback-error-fg)]',
+    info: 'bg-[color:var(--game-feedback-error-bg)] text-[color:var(--game-feedback-error-fg)]',
+  };
+
   function flashLetter(l: string) {
     pressedLetter = l;
     if (pressedTimer) clearTimeout(pressedTimer);
@@ -65,20 +72,20 @@
   <title>Endless Bee</title>
 </svelte:head>
 
-<div class="page">
-  <header class="header">
-    <div class="brand">
-      <span class="bee">🐝</span>
-      <h1>Endless Bee</h1>
+<div class="mx-auto max-w-[520px] px-5 pb-16 pt-6 text-[color:var(--game-fg)]">
+  <header class="mb-4 flex items-center justify-between border-b border-[color:var(--game-border-light)] pb-4">
+    <div class="flex items-center gap-2">
+      <span class="text-2xl">🐝</span>
+      <h1 class="m-0 text-2xl font-bold tracking-tight">Endless Bee</h1>
     </div>
-    <div class="header-actions">
+    <div class="flex items-center gap-2">
       <Button variant="outline" size="pill" onclick={handleNewGame}>New Game</Button>
       <ThemeToggle />
     </div>
   </header>
 
   {#if game.puzzle}
-    <section class="score-section">
+    <section class="mb-4">
       <ScoreBar
         score={game.score}
         maxScore={game.puzzle.maxScore}
@@ -87,27 +94,27 @@
       />
     </section>
 
-    <section class="found-section">
+    <section class="mb-6">
       <FoundWords
         words={game.foundWords}
         total={game.puzzle.validWords.length}
         puzzleLetters={game.puzzle.letters}
       />
-      <div class="pangrams-line">
+      <div class="mt-2 text-right text-[0.85rem] text-[color:var(--game-muted)]">
         <span>
           Pangrams: <strong>{game.progress.pangramsFound}</strong> / {game.progress.pangramsTotal}
         </span>
       </div>
     </section>
 
-    <section class="game-area">
-      <div class="feedback-wrap">
+    <section class="flex flex-col items-center gap-4">
+      <div class="flex h-9 w-full items-center justify-center">
         {#if game.feedback}
           {#key game.feedback.id}
-            <div class="feedback feedback-{game.feedback.kind}">
+            <div class="animate-[feedback-pop_280ms_ease-out] rounded-[6px] px-4 py-[0.4rem] text-[0.95rem] font-bold {feedbackColorClasses[game.feedback.kind] ?? ''}">
               {game.feedback.message}
               {#if game.feedback.score}
-                <span class="feedback-score">+{game.feedback.score}</span>
+                <span class="ml-[0.4rem] font-extrabold text-[color:var(--game-fg)]">+{game.feedback.score}</span>
               {/if}
             </div>
           {/key}
@@ -120,7 +127,7 @@
         validLetters={game.puzzle.letters}
       />
 
-      <div class="honeycomb-wrap">
+      <div class="flex w-full justify-center py-2">
         <Honeycomb
           requiredLetter={game.puzzle.requiredLetter}
           outerLetters={game.puzzle.outerLetters}
@@ -136,128 +143,6 @@
       />
     </section>
   {:else}
-    <div class="loading">Loading puzzle…</div>
+    <div class="py-16 text-center text-[color:var(--game-muted)]">Loading puzzle…</div>
   {/if}
 </div>
-
-<style>
-  .page {
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 1.5rem 1.25rem 4rem;
-    font-family:
-      'nyt-franklin',
-      'Helvetica Neue',
-      Helvetica,
-      Arial,
-      system-ui,
-      -apple-system,
-      'Segoe UI',
-      sans-serif;
-    color: var(--game-fg);
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--game-border-light);
-    margin-bottom: 1rem;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .brand h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-  .bee {
-    font-size: 1.5rem;
-  }
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .score-section {
-    margin-bottom: 1rem;
-  }
-  .found-section {
-    margin-bottom: 1.5rem;
-  }
-  .pangrams-line {
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--game-muted);
-    text-align: right;
-  }
-  .game-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  .feedback-wrap {
-    height: 2.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-  .feedback {
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    animation: feedback-pop 280ms ease-out;
-  }
-  .feedback-success {
-    background: var(--game-feedback-success-bg);
-    color: var(--game-feedback-success-fg);
-  }
-  .feedback-pangram {
-    background: #f7da21;
-    color: #5e4a00;
-  }
-  .feedback-error {
-    background: var(--game-feedback-error-bg);
-    color: var(--game-feedback-error-fg);
-  }
-  .feedback-info {
-    background: var(--game-feedback-error-bg);
-    color: var(--game-feedback-error-fg);
-  }
-  .feedback-score {
-    margin-left: 0.4rem;
-    font-weight: 800;
-    color: var(--game-fg);
-  }
-  @keyframes feedback-pop {
-    0% {
-      opacity: 0;
-      transform: translateY(8px) scale(0.95);
-    }
-    60% {
-      transform: translateY(-2px) scale(1.02);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-  .honeycomb-wrap {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem 0;
-  }
-  .loading {
-    text-align: center;
-    padding: 4rem 0;
-    color: var(--game-muted);
-  }
-</style>
