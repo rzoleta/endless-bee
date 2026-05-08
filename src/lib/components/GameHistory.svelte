@@ -14,11 +14,6 @@
     return record.completedAt ? 'Queen Bee' : getRank(recordScore(record)).current.name;
   }
 
-  function percentage(record: GameRecord): number {
-    if (record.totalWords === 0) return 0;
-    return Math.round((record.foundWords.length / record.totalWords) * 100);
-  }
-
   function lettersDisplay(record: GameRecord): { letter: string; isCenter: boolean }[] {
     return record.letters.map((l) => ({ letter: l.toUpperCase(), isCenter: l === record.requiredLetter }));
   }
@@ -62,7 +57,7 @@
 
         <div class="flex items-center justify-between text-xs text-[color:var(--game-muted)]">
           <span class="font-medium">{recordScore(record)} pts</span>
-          <span>{record.foundWords.length}/{record.totalWords} ({percentage(record)}%)</span>
+          <span>{record.foundWords.length}/{record.totalWords} words</span>
         </div>
       </button>
     {/each}
