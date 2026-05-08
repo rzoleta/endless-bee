@@ -34,7 +34,7 @@
 		font-size: clamp(1.4rem, 3.5vw, 1.9rem);
 		font-weight: 700;
 		letter-spacing: 0.02em;
-		color: #333;
+		color: var(--game-fg);
 		font-family:
 			'nyt-franklin', 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system,
 			'Segoe UI', sans-serif;
@@ -44,7 +44,7 @@
 		color: #f7c800;
 	}
 	.char.invalid {
-		color: #bbb;
+		color: var(--game-invalid);
 	}
 	.cursor {
 		display: inline-block;

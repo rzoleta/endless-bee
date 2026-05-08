@@ -6,6 +6,7 @@
 	import FoundWords from '$lib/components/FoundWords.svelte';
 	import ScoreBar from '$lib/components/ScoreBar.svelte';
 	import { game } from '$lib/game/store.svelte';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 
 	let pressedLetter = $state<string | null>(null);
 	let pressedTimer: ReturnType<typeof setTimeout> | null = null;
@@ -69,7 +70,10 @@
 			<span class="bee">🐝</span>
 			<h1>Endless Bee</h1>
 		</div>
-		<button type="button" class="new-game" onclick={handleNewGame}>New Game</button>
+		<div class="header-actions">
+			<button type="button" class="new-game" onclick={handleNewGame}>New Game</button>
+			<ThemeToggle />
+		</div>
 	</header>
 
 	{#if game.puzzle}
@@ -136,9 +140,6 @@
 </div>
 
 <style>
-	:global(html, body) {
-		background: #fff;
-	}
 	.page {
 		max-width: 520px;
 		margin: 0 auto;
@@ -146,14 +147,14 @@
 		font-family:
 			'nyt-franklin', 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system,
 			'Segoe UI', sans-serif;
-		color: #333;
+		color: var(--game-fg);
 	}
 	.header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		padding-bottom: 1rem;
-		border-bottom: 1px solid #eee;
+		border-bottom: 1px solid var(--game-border-light);
 		margin-bottom: 1rem;
 	}
 	.brand {
@@ -170,20 +171,25 @@
 	.bee {
 		font-size: 1.5rem;
 	}
+	.header-actions {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
 	.new-game {
 		font-size: 0.9rem;
 		font-weight: 600;
 		padding: 0.5rem 1rem;
 		border-radius: 9999px;
-		border: 1px solid #dcdcdc;
-		background: #fff;
+		border: 1px solid var(--game-border);
+		background: var(--game-bg);
 		cursor: pointer;
 		font-family: inherit;
-		color: #333;
+		color: var(--game-fg);
 		transition: background 120ms ease;
 	}
 	.new-game:hover {
-		background: #f5f5f5;
+		background: var(--game-hover);
 	}
 	.score-section {
 		margin-bottom: 1rem;
@@ -194,7 +200,7 @@
 	.pangrams-line {
 		margin-top: 0.5rem;
 		font-size: 0.85rem;
-		color: #666;
+		color: var(--game-muted);
 		text-align: right;
 	}
 	.game-area {
@@ -218,25 +224,25 @@
 		animation: feedback-pop 280ms ease-out;
 	}
 	.feedback-success {
-		background: #fff8d8;
-		color: #8a6d00;
+		background: var(--game-feedback-success-bg);
+		color: var(--game-feedback-success-fg);
 	}
 	.feedback-pangram {
 		background: #f7da21;
 		color: #5e4a00;
 	}
 	.feedback-error {
-		background: #f1f1f1;
-		color: #666;
+		background: var(--game-feedback-error-bg);
+		color: var(--game-feedback-error-fg);
 	}
 	.feedback-info {
-		background: #f1f1f1;
-		color: #666;
+		background: var(--game-feedback-error-bg);
+		color: var(--game-feedback-error-fg);
 	}
 	.feedback-score {
 		margin-left: 0.4rem;
 		font-weight: 800;
-		color: #333;
+		color: var(--game-fg);
 	}
 	@keyframes feedback-pop {
 		0% {
@@ -260,6 +266,6 @@
 	.loading {
 		text-align: center;
 		padding: 4rem 0;
-		color: #888;
+		color: var(--game-muted);
 	}
 </style>

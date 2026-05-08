@@ -4,6 +4,23 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+	/* Game-specific tokens */
+	--game-bg: #ffffff;
+	--game-fg: #333333;
+	--game-border: #dcdcdc;
+	--game-border-light: #eeeeee;
+	--game-muted: #666666;
+	--game-muted-2: #999999;
+	--game-hover: #f5f5f5;
+	--game-hex: #e6e6e6;
+	--game-hex-pressed: #d8d8d8;
+	--game-invalid: #bbbbbb;
+	--game-feedback-success-bg: #fff8d8;
+	--game-feedback-success-fg: #8a6d00;
+	--game-feedback-error-bg: #f1f1f1;
+	--game-feedback-error-fg: #666666;
+	--game-pangram-word: #d8a400;
+
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
 	--card: oklch(1 0 0);
@@ -40,6 +57,23 @@
 }
 
 .dark {
+	/* Game-specific tokens */
+	--game-bg: oklch(0.145 0 0);
+	--game-fg: oklch(0.985 0 0);
+	--game-border: oklch(1 0 0 / 15%);
+	--game-border-light: oklch(1 0 0 / 10%);
+	--game-muted: oklch(0.708 0 0);
+	--game-muted-2: oklch(0.556 0 0);
+	--game-hover: oklch(0.269 0 0);
+	--game-hex: oklch(0.32 0 0);
+	--game-hex-pressed: oklch(0.38 0 0);
+	--game-invalid: oklch(0.45 0 0);
+	--game-feedback-success-bg: oklch(0.28 0.06 85);
+	--game-feedback-success-fg: oklch(0.82 0.14 85);
+	--game-feedback-error-bg: oklch(0.269 0 0);
+	--game-feedback-error-fg: oklch(0.708 0 0);
+	--game-pangram-word: #f7c800;
+
 	--background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);

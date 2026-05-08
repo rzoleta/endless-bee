@@ -51,7 +51,7 @@
 	.rank {
 		font-weight: 700;
 		font-size: 1rem;
-		color: #333;
+		color: var(--game-fg);
 		min-width: 6.5rem;
 	}
 	.bar {
@@ -65,7 +65,7 @@
 		left: 0;
 		right: 0;
 		height: 2px;
-		background: #dcdcdc;
+		background: var(--game-border);
 		transform: translateY(-50%);
 	}
 	.fill {
@@ -83,7 +83,7 @@
 		width: 10px;
 		height: 10px;
 		border-radius: 50%;
-		background: #dcdcdc;
+		background: var(--game-border);
 		transform: translate(-50%, -50%);
 		transition: background 200ms ease;
 	}
@@ -110,11 +110,11 @@
 		flex-direction: column;
 		align-items: flex-end;
 		font-size: 0.85rem;
-		color: #555;
+		color: var(--game-muted);
 		min-width: 4.5rem;
 	}
 	.muted {
-		color: #999;
+		color: var(--game-muted-2);
 		font-size: 0.75rem;
 	}
 </style>

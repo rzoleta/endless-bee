@@ -58,14 +58,14 @@
 		transform-origin: center;
 	}
 	.hex-shape {
-		fill: #e6e6e6;
+		fill: var(--game-hex);
 		transition: fill 120ms ease;
 	}
 	.hex-btn.center .hex-shape {
 		fill: #f7da21;
 	}
 	.hex-btn.pressed .hex-shape {
-		fill: #d8d8d8;
+		fill: var(--game-hex-pressed);
 	}
 	.hex-btn.center.pressed .hex-shape {
 		fill: #e7c800;
@@ -78,7 +78,7 @@
 		justify-content: center;
 		font-weight: 700;
 		font-size: clamp(1.4rem, 4vw, 2rem);
-		color: #333;
+		color: var(--game-fg);
 		pointer-events: none;
 		user-select: none;
 		font-family:

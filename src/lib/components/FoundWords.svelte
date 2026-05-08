@@ -51,8 +51,8 @@
 	.found-words {
 		width: 100%;
 		text-align: left;
-		background: #fff;
-		border: 1px solid #dcdcdc;
+		background: var(--game-bg);
+		border: 1px solid var(--game-border);
 		border-radius: 6px;
 		padding: 0.75rem 1rem;
 		cursor: pointer;
@@ -68,11 +68,11 @@
 	}
 	.count {
 		font-size: 0.95rem;
-		color: #555;
+		color: var(--game-muted);
 	}
 	.found-words :global(.chev) {
 		transition: transform 200ms ease;
-		color: #888;
+		color: var(--game-muted);
 	}
 	.found-words.expanded :global(.chev) {
 		transform: rotate(180deg);
@@ -80,7 +80,7 @@
 	.preview {
 		margin-top: 0.5rem;
 		font-size: 0.95rem;
-		color: #333;
+		color: var(--game-fg);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -101,17 +101,17 @@
 		max-height: 280px;
 		overflow-y: auto;
 		padding-top: 0.5rem;
-		border-top: 1px solid #eee;
+		border-top: 1px solid var(--game-border-light);
 	}
 	.word {
 		text-transform: capitalize;
 		font-size: 0.95rem;
-		color: #333;
+		color: var(--game-fg);
 		padding: 0.2rem 0;
-		border-bottom: 1px solid #eee;
+		border-bottom: 1px solid var(--game-border-light);
 	}
 	.word.pangram {
-		color: #d8a400;
+		color: var(--game-pangram-word);
 		font-weight: 700;
 	}
 </style>

@@ -35,11 +35,11 @@
 		min-width: 5.5rem;
 		height: 3rem;
 		border-radius: 9999px;
-		border: 1px solid #dcdcdc;
-		background: #fff;
+		border: 1px solid var(--game-border);
+		background: var(--game-bg);
 		font-weight: 600;
 		font-size: 1rem;
-		color: #333;
+		color: var(--game-fg);
 		cursor: pointer;
 		display: inline-flex;
 		align-items: center;
@@ -51,7 +51,7 @@
 			'Segoe UI', sans-serif;
 	}
 	.ctrl-btn:hover {
-		background: #f5f5f5;
+		background: var(--game-hover);
 	}
 	.ctrl-btn:active {
 		transform: scale(0.97);
