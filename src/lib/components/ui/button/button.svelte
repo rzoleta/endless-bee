@@ -31,6 +31,8 @@
           'size-8 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-md',
         'icon-lg': 'size-10',
         pill: 'h-auto rounded-full px-4 py-2 text-sm font-semibold',
+        'pill-lg': 'h-12 min-w-22 rounded-full px-4 font-semibold',
+        'icon-xl': 'size-12 rounded-full',
       },
     },
     defaultVariants: {
