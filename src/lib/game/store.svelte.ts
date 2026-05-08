@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 import { generatePuzzle, isPangram, reconstructPuzzle, shuffleOuter, type Puzzle } from './puzzle';
 import { computeTotalScore, computeWordScore, getRank } from './scoring';
 import { getValidWordSet } from './dictionary';
+import { track } from '@vercel/analytics';
 
 const STORAGE_KEY = 'endless-bee-state-v2';
 
@@ -181,6 +182,7 @@ class GameStore {
     this.puzzle = puzzle;
     this.foundWords = [];
     this.persist();
+    track('new_game', { totalWords: puzzle.validWords.length, maxScore: puzzle.maxScore });
   }
 
   private updateActiveRecord() {
