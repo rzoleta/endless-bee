@@ -61,7 +61,7 @@
 </script>
 
 <svelte:head>
-  <title>Endless Bee</title>
+  <title>Endless Bee — Free Unlimited Spelling Bee Game</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl px-5 pb-16 pt-6 text-[color:var(--game-fg)]">
