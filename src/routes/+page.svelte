@@ -75,7 +75,7 @@
     </div>
   </header>
 
-  <div class="flex flex-col gap-8 lg:grid lg:grid-cols-[480px_1fr]">
+  <div class="flex flex-col gap-8 lg:grid lg:grid-cols-[70%_30%]">
     <!-- Game column -->
     <div>
       {#if game.puzzle}
