@@ -79,28 +79,6 @@
     <!-- Game column -->
     <div>
       {#if game.puzzle}
-        <section class="mb-4">
-          <ScoreBar
-            score={game.score}
-            maxScore={game.puzzle.maxScore}
-            currentRankIndex={game.rank?.currentIndex ?? 0}
-            currentRankName={game.rank?.current.name ?? 'Beginner'}
-          />
-        </section>
-
-        <section class="mb-6">
-          <FoundWords
-            words={game.foundWords}
-            total={game.puzzle.validWords.length}
-            puzzleLetters={game.puzzle.letters}
-          />
-          <div class="mt-2 text-right text-[0.85rem] text-[color:var(--game-muted)]">
-            <span>
-              Pangrams: <strong>{game.progress.pangramsFound}</strong> / {game.progress.pangramsTotal}
-            </span>
-          </div>
-        </section>
-
         <section class="flex flex-col items-center gap-4">
           <div class="flex h-9 w-full items-center justify-center">
             {#if game.feedback}
@@ -135,6 +113,28 @@
             onShuffle={() => game.shuffle()}
             onEnter={() => game.submit()}
           />
+        </section>
+
+        <section class="mt-6">
+          <ScoreBar
+            score={game.score}
+            maxScore={game.puzzle.maxScore}
+            currentRankIndex={game.rank?.currentIndex ?? 0}
+            currentRankName={game.rank?.current.name ?? 'Beginner'}
+          />
+        </section>
+
+        <section class="mt-4">
+          <FoundWords
+            words={game.foundWords}
+            total={game.puzzle.validWords.length}
+            puzzleLetters={game.puzzle.letters}
+          />
+          <div class="mt-2 text-right text-[0.85rem] text-[color:var(--game-muted)]">
+            <span>
+              Pangrams: <strong>{game.progress.pangramsFound}</strong> / {game.progress.pangramsTotal}
+            </span>
+          </div>
         </section>
       {:else}
         <div class="py-16 text-center text-[color:var(--game-muted)]">Loading puzzle…</div>
