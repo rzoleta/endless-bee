@@ -43,7 +43,10 @@ class GameStore {
 	private feedbackId = 0;
 
 	score = $derived(this.puzzle ? computeTotalScore(this.foundWords, this.puzzle.letters) : 0);
-	rank = $derived(this.puzzle ? getRank(this.score, this.puzzle.maxScore) : null);
+	rank = $derived(this.puzzle ? getRank(this.score) : null);
+	isComplete = $derived(
+		this.puzzle !== null && this.foundWords.length === this.puzzle.validWords.length
+	);
 	progress = $derived(
 		this.puzzle
 			? {

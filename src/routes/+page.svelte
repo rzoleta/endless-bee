@@ -118,9 +118,9 @@
         <section class="mt-6">
           <ScoreBar
             score={game.score}
-            maxScore={game.puzzle.maxScore}
             currentRankIndex={game.rank?.currentIndex ?? 0}
             currentRankName={game.rank?.current.name ?? 'Beginner'}
+            isComplete={game.isComplete}
           />
         </section>
 

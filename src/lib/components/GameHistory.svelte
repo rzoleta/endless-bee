@@ -11,7 +11,7 @@
   }
 
   function recordRank(record: GameRecord): string {
-    return getRank(recordScore(record), record.maxScore).current.name;
+    return record.completedAt ? 'Queen Bee' : getRank(recordScore(record)).current.name;
   }
 
   function percentage(record: GameRecord): number {
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <div class="mb-1 flex flex-wrap gap-0.5">
+        <div class="mb-1.5 flex flex-wrap gap-0.5">
           {#each lettersDisplay(record) as { letter, isCenter }}
             <span
               class="text-xs font-bold
@@ -60,9 +60,9 @@
           {/each}
         </div>
 
-        <div class="text-xs text-[color:var(--game-muted)]">
-          {record.foundWords.length}/{record.totalWords} words
-          ({percentage(record)}%)
+        <div class="flex items-center justify-between text-xs text-[color:var(--game-muted)]">
+          <span class="font-medium">{recordScore(record)} pts</span>
+          <span>{record.foundWords.length}/{record.totalWords} ({percentage(record)}%)</span>
         </div>
       </button>
     {/each}
