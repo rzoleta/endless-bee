@@ -5,7 +5,7 @@
   import Moon from '@lucide/svelte/icons/moon';
 </script>
 
-<Button variant="outline" size="icon" aria-label="Toggle dark mode" onclick={toggleMode}>
+<Button variant="outline" class="rounded-full" aria-label="Toggle dark mode" onclick={toggleMode}>
   {#if mode.current === 'dark'}
     <Sun />
   {:else}
