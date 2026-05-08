@@ -17,7 +17,7 @@
 </script>
 
 <div
-  class="flex min-h-10 items-center justify-center text-[clamp(1.4rem,3.5vw,1.9rem)] font-bold uppercase tracking-[0.02em] text-[color:var(--game-fg)]"
+  class="flex min-h-10 items-center justify-center text-[1.9rem] font-bold uppercase tracking-[0.02em] text-[color:var(--game-fg)]"
   aria-live="polite"
 >
   {#if input.length === 0}

@@ -35,7 +35,7 @@
     />
   </svg>
   <span
-    class="pointer-events-none absolute inset-0 flex select-none items-center justify-center text-[clamp(1.4rem,4vw,2rem)] font-bold tracking-[0.02em] text-[color:var(--game-fg)] {center
+    class="pointer-events-none absolute inset-0 flex select-none items-center justify-center text-[2rem] font-bold tracking-[0.02em] text-[color:var(--game-fg)] {center
       ? 'dark:text-black'
       : ''}"
   >
