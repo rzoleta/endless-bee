@@ -182,7 +182,7 @@ class GameStore {
     this.puzzle = puzzle;
     this.foundWords = [];
     this.persist();
-    track('new_game', { totalWords: puzzle.validWords.length, maxScore: puzzle.maxScore });
+    track('new_game');
   }
 
   private updateActiveRecord() {
