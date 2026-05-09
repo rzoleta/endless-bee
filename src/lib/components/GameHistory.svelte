@@ -15,10 +15,12 @@
   }
 
   function lettersDisplay(record: GameRecord): { letter: string; isCenter: boolean }[] {
-    return record.letters.map((l) => ({
-      letter: l.toUpperCase(),
-      isCenter: l === record.requiredLetter,
-    }));
+    const outer = record.letters
+      .filter((l) => l !== record.requiredLetter)
+      .sort()
+      .map((l) => ({ letter: l.toUpperCase(), isCenter: false }));
+    const center = { letter: record.requiredLetter.toUpperCase(), isCenter: true };
+    return [...outer.slice(0, 3), center, ...outer.slice(3)];
   }
 </script>
 
